@@ -18,6 +18,7 @@ public class Encomenda {
     private String regiaoDestino;
     private Double percentualProgresso; // 0.0 (postado) / 100.0 (entregue)
     private Double custoFrete;
+    private Double distanciaKm;
 
     // Construtor obrigatório para o Spring funcionar
     public Encomenda() {
@@ -62,5 +63,13 @@ public class Encomenda {
 
     public void setCustoFrete(Double custoFrete) {
         this.custoFrete = custoFrete;
+    }
+
+    public Double getDistanciaKm() {
+        return distanciaKm;
+    }
+
+    public void setDistanciaKm(Double distanciaKm) {
+        this.distanciaKm = distanciaKm;
     }
 }

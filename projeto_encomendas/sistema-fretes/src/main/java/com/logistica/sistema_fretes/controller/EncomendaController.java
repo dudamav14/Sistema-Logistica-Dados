@@ -31,7 +31,7 @@ public class EncomendaController {
     
     @PostMapping
     public Encomenda criarNova(@RequestBody Encomenda encomenda) {
-        // Repassamos a encomenda para o "Gerente" (Service) calcular o frete e salvar
+        // Repassa a encomenda para o "Gerente" (Service) calcular o frete e salvar
         return service.registrarNovaEncomenda(encomenda);
     }
 
@@ -46,22 +46,23 @@ public class EncomendaController {
         // 1. O Java vai lá no PostgreSQL e pega todas as encomendas
         List<Encomenda> todasEncomendas = repository.findAll();
 
-        // Se o banco estiver vazio, não gastamos a nossa cota de IA
+        // Se o banco estiver vazio, não gasta a cota de IA
         if (todasEncomendas.isEmpty()) {
             return "Nenhuma encomenda encontrada no banco de dados para analisar.";
         }
 
         // 2. Construindo o Prompt (A Instrução)
         StringBuilder prompt = new StringBuilder();
-        prompt.append("Você é um analista de logística sênior. ");
-        prompt.append("Analise os seguintes dados de fretes extraídos do nosso banco de dados ");
-        prompt.append("e escreva um resumo executivo de 1 parágrafo destacando qual região está mais cara:\n\n");
+        prompt.append("Atue como um Diretor de Logística. Analise a lista de fretes abaixo e escreva um resumo de 2 parágrafos. ");
+        prompt.append("Sua análise DEVE incluir: 1) Qual região tem o maior volume de pedidos. ");
+        prompt.append("2) Qual o impacto da distância no custo final. ");
+        prompt.append("3) Uma recomendação estratégica para reduzir custos onde o frete está mais caro.\n\n");
 
         // 3. Injetando os dados reais do banco de dados no texto para a IA ler
         for (Encomenda e : todasEncomendas) {
-            prompt.append("- Rastreio: ").append(e.getCodigoRastreio())
-                  .append(" | Região: ").append(e.getRegiaoDestino())
-                  .append(" | Custo de Frete: R$ ").append(e.getCustoFrete())
+            prompt.append("- Região: ").append(e.getRegiaoDestino())
+                  .append(" | Distância: ").append(e.getDistanciaKm()).append(" km")
+                  .append(" | Custo: R$ ").append(e.getCustoFrete())
                   .append("\n");
         }
 

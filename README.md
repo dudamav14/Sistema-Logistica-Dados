@@ -1,47 +1,40 @@
-# Sistema Integrado de Gestão e Análise de Fretes
+# Sistema Integrado de Gestão e Análise de Fretes com IA (Full Stack)
 
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Gemini AI](https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white)
 
 ## Sobre o Projeto
-Este é um projeto Full Stack focado em engenharia de software e ciência de dados. O objetivo do sistema é gerenciar o registro de encomendas logísticas, calcular automaticamente os custos de frete baseados no progresso da entrega e gerar inteligência visual a partir desses dados.
+Este é um projeto Full Stack com foco em engenharia de software e inteligência artificial. O sistema gerencia o registro de encomendas logísticas, calcula dinamicamente os custos de frete baseados na distância e região, e utiliza IA generativa para atuar como um analista de dados automatizado.
 
-O projeto foi dividido em duas fases arquiteturais:
-1. **Back-End (API REST):** Construído em Java com Spring Boot, responsável por receber requisições, aplicar regras de negócio (cálculo de frete) e persistir os dados.
-2. **Análise de Dados:** Script em Python que se conecta diretamente ao banco de dados relacional para extrair, consolidar e visualizar métricas financeiras usando gráficos.
+O projeto demonstra a capacidade de integrar múltiplas camadas tecnológicas em uma única solução coesa, aplicando o conceito de **RAG (Retrieval-Augmented Generation)**.
 
-## Arquitetura
+## Arquitetura da Solução
 
-* **API REST:** Porta de entrada para cadastro das encomendas via método `POST` e listagem via `GET`.
-* **Regra de Negócio:** Camada `Service` no Java calcula uma taxa base e adiciona custos de logística regional conforme a porcentagem de progresso da entrega.
-* **Persistência:** PostgreSQL, acessado via Spring Data JPA (Hibernate).
-* **Inteligência:** O Python atua como consumidor dos dados brutos, transformando-os em DataFrames para estatísticas e renderizando gráficos de barras com Matplotlib.
+* **Front-End:** Interface responsiva e reativa construída nativamente com HTML5, CSS3 e Vanilla JavaScript, utilizando a *Fetch API* para comunicação assíncrona.
+* **Back-End (API REST):** Construído em Java com Spring Boot, gerenciando endpoints de cadastro, listagem e integração com serviços externos.
+* **Regra de Negócio Dinâmica:** Cálculo inteligente do valor de frete baseado em uma fórmula que considera: `Taxa Base + (Distância em Km × Valor do Km Regional)`.
+* **Integração com IA:** Serviço nativo no Java que se comunica via HTTP (REST) com a API do **Google Gemini (2.5 Flash)**. O sistema extrai os dados do banco e injeta o contexto no prompt para a IA gerar relatórios executivos sob demanda.
+* **Persistência de Dados:** Modelagem relacional no PostgreSQL, operada através do Spring Data JPA (Hibernate).
 
 ## Tecnologias Utilizadas
 * **Back-End:** Java 17+, Spring Boot (Web, Data JPA).
+* **Front-End:** HTML, CSS, JavaScript.
+* **Inteligência Artificial:** Google Gemini API.
 * **Banco de Dados:** PostgreSQL.
-* **Análise de Dados:** Python 3, Pandas, Matplotlib, Psycopg2.
-* **Ferramentas:** VS Code, Thunder Client/Postman, pgAdmin.
+* **Ferramentas:** VS Code, pgAdmin.
 
 ## Como Executar
 
-### 1. Banco de Dados
-Crie um banco de dados no PostgreSQL chamado `logistica_db`.
+### 1. Preparando o Ambiente
+1. Crie um banco de dados no PostgreSQL chamado `logistica_db`.
+2. Configure suas credenciais (`username` e `password`) no arquivo `application.properties`.
+3. Gere uma API Key no Google AI Studio e insira na propriedade `gemini.api.key`.
 
-### 2. Rodando a API (Java)
-1. Navegue até a pasta `sistema-fretes`.
-2. Configure suas credenciais do PostgreSQL no arquivo `application.properties`.
-3. Execute o arquivo principal `SistemaFretesApplication.java`.
-4. A API estará rodando em `http://localhost:8080/api/encomendas`.
-
-### 3. Rodando a Análise (Python)
-1. Navegue até a pasta `analise_logistica`.
-2. Instale as dependências executando: `pip install pandas psycopg2-binary matplotlib`
-3. Execute o script com o comando: `python analise.py`
-4. Um gráfico será exibido demonstrando o Custo Médio de Frete por Região.
-
----
-*Desenvolvido como projeto de portfólio para demonstrar integração entre Sistemas Web (Java) e Análise de Dados (Python).*
+### 2. Rodando a Aplicação
+1. Execute a classe principal `SistemaFretesApplication.java`.
+2. O Spring Boot criará as tabelas automaticamente (`ddl-auto=create/update`).
+3. Acesse o sistema pelo navegador na URL raiz: `http://localhost:8080/`.
+4. Utilize a interface para cadastrar encomendas e gerar a análise executiva automatizada com a Inteligência Artificial.

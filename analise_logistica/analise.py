@@ -41,22 +41,17 @@ if dados is not None:
     
     print("\n--- ESTATÍSTICAS BÁSICAS ---")
     # O comando .describe() calcula média, mínimo e máximo das colunas numéricas
-    print(dados.describe())
+    plt.figure(figsize=(8, 6))
 
-    print("\nGerando gráfico de custo médio por região...")
-    # Agrupa (groupby) os dados pela 'regiao_destino' e calcular a média (mean) do 'custo_frete'
-    media_por_regiao = dados.groupby('regiao_destino')['custo_frete'].mean()
+    # Cria um gráfico de dispersão (pontos)
+    plt.scatter(dados['distancia_km'], dados['custo_frete'], color='purple', alpha=0.7, edgecolors='black')
 
-    # Cria um gráfico do tipo 'bar' (barras) com uma cor bacana
-    media_por_regiao.plot(kind='bar', color='royalblue', edgecolor='black')
+    # Títulos e rótulos
+    plt.title('Impacto da Distância no Custo do Frete', fontsize=14)
+    plt.xlabel('Distância (Km)', fontsize=12)
+    plt.ylabel('Custo Final (R$)', fontsize=12)
+    
+    # Adiciona uma grade de fundo para facilitar a leitura
+    plt.grid(True, linestyle='--', alpha=0.5)
 
-    # Adiciona títulos
-    plt.title('Custo Médio de Frete por Região', fontsize=14)
-    plt.xlabel('Região de Destino', fontsize=12)
-    plt.ylabel('Custo Médio (R$)', fontsize=12)
-
-    # Rotaciona os nomes do eixo X (Sudeste, Sul, etc) para ficarem retos (0 graus)
-    plt.xticks(rotation=0)
-
-    # Exibe a janela com o gráfico pronto
     plt.show()

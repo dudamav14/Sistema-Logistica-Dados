@@ -22,18 +22,39 @@ public class EncomendaService {
      */
     public Encomenda registrarNovaEncomenda(Encomenda encomenda) {
         
-        // Regra de Negócio: Calcular o custo de envio com base no progresso e região.
-        // Se o progresso for 0.0, aplica uma taxa base de R$ 50.00
-        // Se o progresso for maior, simula um custo adicional de logística regional.
-        Double custoCalculado = 50.00;
+        Double taxaBase = 50.00;
+        Double valorPorKm = 0.0;
         
-        if (encomenda.getPercentualProgresso() != null && encomenda.getPercentualProgresso() > 0.0) {
-             custoCalculado += (encomenda.getPercentualProgresso() * 0.5); 
+        // Se a distância vier vazia, assumimos 1km para não quebrar a matemática
+        Double distancia = (encomenda.getDistanciaKm() != null) ? encomenda.getDistanciaKm() : 1.0;
+
+        if (encomenda.getRegiaoDestino() != null) {
+            switch (encomenda.getRegiaoDestino()) {
+                case "Sudeste":
+                    valorPorKm = 0.15; // Estradas melhores, km mais barato
+                    break;
+                case "Sul":
+                    valorPorKm = 0.20;
+                    break;
+                case "Centro-Oeste":
+                    valorPorKm = 0.30;
+                    break;
+                case "Nordeste":
+                    valorPorKm = 0.40;
+                    break;
+                case "Norte":
+                    valorPorKm = 0.55; // Logística fluvial/complexa, km mais caro
+                    break;
+                default:
+                    valorPorKm = 0.25;
+                    break;
+            }
         }
 
-        encomenda.setCustoFrete(custoCalculado);
+        // Fórmula real: Taxa Base + (Distância * Preço do Km)
+        Double custoFinal = taxaBase + (distancia * valorPorKm);
+        encomenda.setCustoFrete(custoFinal);
 
-        // O método .save() vem do JpaRepository e gera um comando "INSERT INTO tb_encomendas..."
         return repository.save(encomenda);
     }
 }
